@@ -1,25 +1,19 @@
 var fs = require("fs");
 var express = require("express");
 var path = require("path");
-
 var app = express();
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 app.use(express.static("public"));
 
-//HTML routes
-app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "../../index.html"));
-});
+// IMPORT ROUTES FILES
+require("./routes/apiroutes")(app);
+require("./routes/htmlRoutes")(app);
 
-app.get("/notes", function(req, res) {
-  res.sendFile(path.join(__dirname, "../../notes.html"));
-});
-
-//shows the server is listeing
+// Server Listen
 app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
-  });
+});
